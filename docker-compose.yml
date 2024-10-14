@@ -1,0 +1,28 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/server.Dockerfile
+    ports:
+      - "9090:9090"
+    environment:
+      SVC_HOST: "0.0.0.0"
+      SVC_PORT: ":9090"
+    networks:
+      - wow_pow_net
+
+  client:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/client.Dockerfile
+    depends_on:
+      - server
+    environment:
+      SVC_HOST: "server"
+      SVC_PORT: ":9090"
+    networks:
+      - wow_pow_net
+
+networks:
+  wow_pow_net:
+    driver: bridge
